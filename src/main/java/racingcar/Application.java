@@ -5,22 +5,38 @@ import camp.nextstep.edu.missionutils.Randoms;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Arrays;
 
 public class Application {
     public static void main(String[] args) {
+
         // 자동차 이름 입력
         System.out.println("경주할 자동차 이름을 입력하세요. (이름은 쉼표(,) 기준으로 구분)");
         String carString = Console.readLine();
         String[] carNames = carString.split(",");
 
+        final int START_NUMBER = 0;
+        final int END_NUMBER = 9;
+        final int MOVE_NUMBER = 4;
+        final int MAX_NAME = 5;
+
+        // 이름 예외 처리
+        for (String carName : carNames) {
+            if (carName.length() > MAX_NAME) {
+                throw new IllegalArgumentException("[ERROR] 이름은 5자 이하만 가능합니다.");
+            }
+        }
+
         // 시도 횟수 입력
         System.out.println("시도할 횟수를 입력하세요.");
         String input = Console.readLine();
-        int rounds = Integer.parseInt(input);
+        int rounds = 0;
 
-        final int START_NUMBER = 0;
-        final int END_NUMBER = 9;
+        // 숫자 확인 예외 처리
+        try {
+            rounds = Integer.parseInt(input);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("시도 횟수는 숫자여야 합니다.");
+        }
 
         // 자동차 전진 거리 저장 배열
         int[] positions = new int[carNames.length];
@@ -31,7 +47,7 @@ public class Application {
         for (int i = 0; i < rounds; i++) {
             for (int j = 0; j < carNames.length; j++) {
                 int randomNumber = Randoms.pickNumberInRange(START_NUMBER, END_NUMBER);
-                if (randomNumber >= 4) {
+                if (randomNumber >= MOVE_NUMBER) {
                     positions[j]++;
                 }
             }
