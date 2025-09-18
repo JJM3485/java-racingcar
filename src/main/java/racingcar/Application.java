@@ -3,8 +3,11 @@ package racingcar;
 import camp.nextstep.edu.missionutils.Console;
 import camp.nextstep.edu.missionutils.Randoms;
 
-public class Application {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Arrays;
 
+public class Application {
     public static void main(String[] args) {
         // 자동차 이름 입력
         System.out.println("경주할 자동차 이름을 입력하세요. (이름은 쉼표(,) 기준으로 구분)");
@@ -38,6 +41,23 @@ public class Application {
             }
             System.out.println();
         }
-        System.out.println();
+
+        // 최종 우승자
+        int maxPosition = 0;
+        for (int nowPosition : positions) {
+            if (nowPosition > maxPosition) {
+                maxPosition = nowPosition;
+            }
+        }
+
+        List<String> winners = new ArrayList<>();
+        for (int i = 0; i < carNames.length; i++) {
+            if (positions[i] == maxPosition) {
+                winners.add(carNames[i]);
+            }
+        }
+
+        String winnerString = String.join(", ", winners);
+        System.out.println("최종 우승자 : " + winnerString);
     }
 }
