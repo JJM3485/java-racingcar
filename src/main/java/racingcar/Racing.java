@@ -24,18 +24,27 @@ public class Racing {
         printWinners();
     }
 
-    // 레이스 진행
+    // 한 라운드 실행
     private void playRound() {
+        for (int i = 0; i < carNames.length; i++) {
+            moveCar(i);
+        }
+    }
+
+    // 이동 여부 확인
+    private void moveCar(int carIndex) {
+        if (shouldMove()) {
+            positions[carIndex]++;
+        }
+    }
+
+    // 이동 여부 결정
+    private boolean shouldMove() {
         final int MOVE_NUMBER = 4;
         final int START_NUMBER = 0;
         final int END_NUMBER = 9;
-
-        for (int i = 0; i < carNames.length; i++) {
-            int randomNumber = Randoms.pickNumberInRange(START_NUMBER, END_NUMBER);
-            if (randomNumber >= MOVE_NUMBER) {
-                positions[i]++;
-            }
-        }
+        int randomNumber = Randoms.pickNumberInRange(START_NUMBER, END_NUMBER);
+        return randomNumber >= MOVE_NUMBER;
     }
 
     // 결과 출력
@@ -50,19 +59,27 @@ public class Racing {
     private void printWinners() {
         int maxPosition = 0;
         for (int nowPosition : positions) {
-            if (nowPosition > maxPosition) {
-                maxPosition = nowPosition;
-            }
+            maxPosition = getMax(maxPosition, nowPosition);
         }
 
         List<String> winners = new ArrayList<>();
         for (int i = 0; i < carNames.length; i++) {
-            if (positions[i] == maxPosition) {
-                winners.add(carNames[i]);
-            }
+            addWinner(winners, carNames[i], positions[i], maxPosition);
         }
 
         String winnerString = String.join(", ", winners);
         System.out.println("최종 우승자 : " + winnerString);
+    }
+
+    // 최대값 비교
+    private int getMax(int currentMax, int nowPosition) {
+        return nowPosition > currentMax ? nowPosition : currentMax;
+    }
+
+    //우승자 추가
+    private void addWinner(List<String> winners, String carName, int position, int maxPosition) {
+        if (position == maxPosition) {
+            winners.add(carName);
+        }
     }
 }
