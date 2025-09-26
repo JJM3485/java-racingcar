@@ -3,20 +3,27 @@ import camp.nextstep.edu.missionutils.Console;
 
 public class Car {
     private final int MAX_NAME = 5;
-
+    
     public String[] getCarNames() {
-        // 이름 입력
+        String[] carNames = readCarNames();
+        validCarNames(carNames);
+        return carNames;
+    }
+
+    // 자동차 이름 입력
+    private String[] readCarNames() {
         System.out.println("경주할 자동차 이름을 입력하세요. (이름은 쉼표(,) 기준으로 구분)");
         String carString = Console.readLine();
-        String[] carNames = carString.split(",");
+        return carString.split(",");
+    }
 
-        // 이름 예외 처리
+    // 이름 예외 처리
+    private void validCarNames(String[] carNames) {
         for (String carName : carNames) {
             if (carName.length() > MAX_NAME) {
                 throw new IllegalArgumentException("[ERROR] 이름은 5자 이하만 가능합니다.");
             }
         }
-        return carNames;
     }
 
     public int getRounds() {
